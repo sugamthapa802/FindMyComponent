@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Forward to login page
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
 
     @Override
@@ -57,14 +57,14 @@ public class LoginServlet extends HttpServlet {
         // Validation: Check if username/email is provided
         if (usernameOrEmail == null || usernameOrEmail.trim().isEmpty()) {
             request.setAttribute("error", "Username or email is required");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
             return;
         }
 
         // Validation: Check if password is provided
         if (password == null || password.isEmpty()) {
             request.setAttribute("error", "Password is required");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
             return;
         }
 
@@ -81,7 +81,7 @@ public class LoginServlet extends HttpServlet {
             // Check if user exists
             if (user == null) {
                 request.setAttribute("error", "Invalid username/email or password");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
                 return;
             }
 
@@ -90,14 +90,14 @@ public class LoginServlet extends HttpServlet {
 
             if (!passwordMatches) {
                 request.setAttribute("error", "Invalid username/email or password");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
                 return;
             }
 
             // Check if account is active
             if (!user.isActive()) {
                 request.setAttribute("error", "Your account has been deactivated. Please contact support.");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
                 return;
             }
 
@@ -120,7 +120,7 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "An error occurred during login. Please try again.");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
         }
     }
 
