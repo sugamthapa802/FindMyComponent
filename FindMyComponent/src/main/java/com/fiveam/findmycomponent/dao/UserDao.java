@@ -16,10 +16,11 @@ public interface UserDao {
     User findById(int id);
     User findByUsername(String username);
     User findByEmail(String email);
-
+    List<User> findAll();  // - for admin to list all users
     // Update
     boolean updateLastLogin(int userId);
     boolean updateRole(int userId, int newRoleId);
+    boolean update(User user);
 
     // Delete
     boolean delete(int id);
