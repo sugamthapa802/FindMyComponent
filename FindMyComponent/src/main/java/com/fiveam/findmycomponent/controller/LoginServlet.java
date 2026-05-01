@@ -166,6 +166,9 @@ public class LoginServlet extends HttpServlet {
             default:
                 response.sendRedirect(contextPath + "/buyer/shop");
                 break;
+//            default:
+//                response.sendRedirect(contextPath + "/index.jsp");
+//                break;
         }
     }
 }
