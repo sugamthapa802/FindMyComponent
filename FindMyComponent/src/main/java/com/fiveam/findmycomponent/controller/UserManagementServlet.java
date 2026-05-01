@@ -19,39 +19,23 @@ import java.util.List;
 /**
  * UserManagementServlet - Handles user management for ADMIN
  * URL: /admin/users
- * Only ADMIN can access this servlet
- *
- * GET requests:
- * - No action: List all users
- * - action=edit&id=X: Show edit form for user
- *
- * POST requests:
- * - action=update: Update user details (with self-protection)
+ * Only ADMIN can access this servlet (AuthFilter will handle)
  */
 @WebServlet("/admin/users")
 public class UserManagementServlet extends HttpServlet {
 
-    private UserDao userDAO;
-    private RoleDao roleDAO;
+    private UserDao userDao;
+    private RoleDao roleDao;
 
     @Override
     public void init() throws ServletException {
-        userDAO = new UserDaoImpl();
-        roleDAO = new RoleDaoImpl();
+        userDao = new UserDaoImpl();
+        roleDao = new RoleDaoImpl();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // Temporary ADMIN check (will be replaced by filter later)
-        HttpSession session = request.getSession(false);
-        User loggedInUser = (session != null) ? (User) session.getAttribute("user") : null;
-
-        if (loggedInUser == null || loggedInUser.getRoleId() != Role.ROLE_ADMIN) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied. Admin only.");
-            return;
-        }
 
         String action = request.getParameter("action");
 
@@ -61,16 +45,18 @@ public class UserManagementServlet extends HttpServlet {
             if (idParam != null && !idParam.isEmpty()) {
                 try {
                     int id = Integer.parseInt(idParam);
-                    User user = userDAO.findById(id);
+                    User user = userDao.findById(id);
                     if (user != null) {
                         request.setAttribute("editUser", user);
 
                         // Check if editing self
-                        boolean isEditingSelf = (user.getId() == loggedInUser.getId());
+                        HttpSession session = request.getSession(false);
+                        User loggedInUser = (session != null) ? (User) session.getAttribute("user") : null;
+                        boolean isEditingSelf = (loggedInUser != null && user.getId() == loggedInUser.getId());
                         request.setAttribute("isEditingSelf", isEditingSelf);
 
                         // Get all roles for dropdown
-                        List<Role> roles = roleDAO.findAll();
+                        List<Role> roles = roleDao.findAll();
                         request.setAttribute("roles", roles);
 
                         request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
@@ -84,7 +70,7 @@ public class UserManagementServlet extends HttpServlet {
 
         } else {
             // Default: List all users
-            List<User> users = userDAO.findAll();
+            List<User> users = userDao.findAll();
             request.setAttribute("users", users);
             request.getRequestDispatcher("/WEB-INF/admin/users.jsp").forward(request, response);
         }
@@ -94,14 +80,8 @@ public class UserManagementServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Temporary ADMIN check (will be replaced by filter later)
         HttpSession session = request.getSession(false);
         User loggedInUser = (session != null) ? (User) session.getAttribute("user") : null;
-
-        if (loggedInUser == null || loggedInUser.getRoleId() != Role.ROLE_ADMIN) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied. Admin only.");
-            return;
-        }
 
         String action = request.getParameter("action");
 
@@ -122,7 +102,7 @@ public class UserManagementServlet extends HttpServlet {
 
             try {
                 int id = Integer.parseInt(idParam);
-                User user = userDAO.findById(id);
+                User user = userDao.findById(id);
 
                 if (user != null) {
                     // Always update basic info
@@ -131,7 +111,7 @@ public class UserManagementServlet extends HttpServlet {
                     user.setPhone(phone);
 
                     // Check if editing self
-                    boolean isEditingSelf = (user.getId() == loggedInUser.getId());
+                    boolean isEditingSelf = (loggedInUser != null && user.getId() == loggedInUser.getId());
 
                     if (isEditingSelf) {
                         // Self edit: prevent role change and deactivation
@@ -144,19 +124,11 @@ public class UserManagementServlet extends HttpServlet {
                             user.setRoleId(roleId);
                         }
 
-                        if (isActiveParam != null) {
-                            user.setActive(true);
-                        } else {
-                            user.setActive(false);
-                        }
+                        user.setActive("true".equals(isActiveParam));
                     }
 
                     // Perform update
-                    boolean updated = userDAO.update(user);
-
-                    if (!updated) {
-                        request.setAttribute("error", "Failed to update user");
-                    }
+                    userDao.update(user);
                 }
 
             } catch (NumberFormatException e) {
