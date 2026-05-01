@@ -1,13 +1,13 @@
 CREATE DATABASE IF NOT EXISTS findmycomponent;
 USE findmycomponent;
 
-CREATE TABLE roles (
+CREATE TABLE if NOT EXISTS roles (
                        id INT PRIMARY KEY AUTO_INCREMENT,
                        name VARCHAR(20) UNIQUE NOT NULL,  -- 'ADMIN', 'BUYER', 'SELLER'
                        description VARCHAR(100),
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-CREATE TABLE users (
+CREATE TABLE if NOT EXISTS users (
                        id INT PRIMARY KEY AUTO_INCREMENT,
                        username VARCHAR(50) UNIQUE NOT NULL,
                        email VARCHAR(100) UNIQUE NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE users (
                         last_login TIMESTAMP NULL,
                         FOREIGN KEY (role_id) REFERENCES roles(id)
                         );
-CREATE TABLE user_sessions (
+CREATE TABLE if NOT EXISTS user_sessions (
                                id INT PRIMARY KEY AUTO_INCREMENT,
                                user_id INT NOT NULL,
                                session_token VARCHAR(255) UNIQUE NOT NULL,
@@ -32,4 +32,13 @@ CREATE TABLE user_sessions (
                                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                                INDEX idx_token (session_token),
                                INDEX idx_expires (expires_at)
+);
+
+CREATE TABLE if NOT EXISTS categories (
+                            id INT PRIMARY KEY AUTO_INCREMENT,
+                            name VARCHAR(100) UNIQUE NOT NULL,
+                            description TEXT,
+                            is_active BOOLEAN DEFAULT TRUE,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
