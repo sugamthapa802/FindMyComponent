@@ -42,3 +42,19 @@ CREATE TABLE if NOT EXISTS categories (
                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+CREATE TABLE if NOT EXISTS products (
+                          id INT PRIMARY KEY AUTO_INCREMENT,
+                          seller_id INT NOT NULL,
+                          category_id INT NOT NULL,
+                          name VARCHAR(200) NOT NULL,
+                          brand VARCHAR(100),
+                          description TEXT,
+                          price DECIMAL(10, 2) NOT NULL,
+                          stock_quantity INT DEFAULT 0,
+                          main_image_url VARCHAR(500),
+                          is_active BOOLEAN DEFAULT TRUE,
+                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                          FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE RESTRICT,
+                          FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT
+);
