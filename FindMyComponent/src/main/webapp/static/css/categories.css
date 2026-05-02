@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap');
+/* Orbitron for Headings & Labels | Exo 2 for Body, Data, and Buttons */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
     --bg:           #0d0f14;
@@ -23,7 +25,8 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'DM Sans', sans-serif;
+    /* Main body font: Exo 2 */
+    font-family: 'Exo 2', sans-serif;
     background-color: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -56,11 +59,14 @@ body {
 .admin-header img { width: 45px; height: 45px; object-fit: contain; }
 
 .admin-header h1 {
-    font-family: 'Playfair Display', serif;
+    /* Heading font: Orbitron */
+    font-family: 'Orbitron', sans-serif;
     font-size: 1.8rem;
     background: linear-gradient(135deg, #e8eaf0 0%, var(--accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 /* Containers */
@@ -79,7 +85,14 @@ body {
     margin-bottom: 24px;
 }
 
-.table-header h2 { font-weight: 600; color: var(--text); font-size: 1.25rem; }
+.table-header h2 {
+    /* Sub-heading font: Orbitron */
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 1.25rem;
+    text-transform: uppercase;
+}
 
 /* Table Styles */
 .data-table-wrapper { overflow-x: auto; }
@@ -91,6 +104,8 @@ body {
 }
 
 .data-table th {
+    /* Table headers: Orbitron */
+    font-family: 'Orbitron', sans-serif;
     text-align: left;
     padding: 12px 16px;
     font-size: 0.75rem;
@@ -101,6 +116,8 @@ body {
 }
 
 .data-table td {
+    /* Data font: Exo 2 */
+    font-family: 'Exo 2', sans-serif;
     padding: 18px 16px;
     border-bottom: 1px solid var(--border);
     font-size: 0.95rem;
@@ -111,6 +128,8 @@ body {
 
 /* Status Badges */
 .status-badge {
+    /* Badges use Exo 2 per your button preference */
+    font-family: 'Exo 2', sans-serif;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.7rem;
@@ -123,14 +142,18 @@ body {
 .status-badge.inactive { background: var(--error-bg); color: var(--error-text); border: 1px solid var(--error-border); }
 
 /* Buttons & Actions */
-.btn-primary, .btn-submit {
+.btn-primary, .btn-submit, .btn-edit, .btn-delete, .btn-activate, .btn-cancel {
+    /* Buttons: Exo 2 */
+    font-family: 'Exo 2', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     background: var(--accent);
     color: #fff;
     padding: 10px 20px;
     border-radius: var(--radius-sm);
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     border: none;
     cursor: pointer;
     transition: all var(--transition);
@@ -138,32 +161,37 @@ body {
 
 .btn-primary:hover { background: #3a7ae4; box-shadow: 0 6px 20px var(--accent-glow); transform: translateY(-1px); }
 
-.btn-edit { color: var(--accent); text-decoration: none; margin-right: 15px; font-weight: 500; }
-.btn-edit:hover { text-decoration: underline; }
+.btn-edit { background: none; color: var(--accent); padding: 0; margin-right: 15px; }
+.btn-edit:hover { text-decoration: underline; background: none; box-shadow: none; transform: none; }
 
 .btn-delete, .btn-activate {
     background: none;
     border: none;
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
     padding: 0;
 }
-
 .btn-delete { color: var(--error-text); }
 .btn-activate { color: var(--success-text); }
 
 /* Forms */
 .form-group { margin-bottom: 24px; display: flex; flex-direction: column; }
-.form-group label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.form-group label {
+    /* Label font: Orbitron */
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+}
+
 .form-group input, .form-group textarea {
+    /* Input font: Exo 2 */
+    font-family: 'Exo 2', sans-serif;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     color: var(--text);
     padding: 12px 14px;
-    font-family: 'DM Sans', sans-serif;
     font-size: 1rem;
     outline: none;
     transition: all var(--transition);
@@ -172,9 +200,9 @@ body {
 .form-group input:focus, .form-group textarea:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px var(--accent-glow); }
 
 .form-actions { display: flex; align-items: center; gap: 20px; margin-top: 32px; }
-.btn-cancel { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color var(--transition); }
-.btn-cancel:hover { color: var(--text); }
+.btn-cancel { background: none; color: var(--muted); padding: 0; }
+.btn-cancel:hover { color: var(--text); background: none; box-shadow: none; transform: none; }
 
 /* Alerts */
-.alert { padding: 14px 18px; border-radius: var(--radius-sm); margin-bottom: 24px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+.alert { font-family: 'Exo 2', sans-serif; padding: 14px 18px; border-radius: var(--radius-sm); margin-bottom: 24px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
 .alert-error { background: var(--error-bg); border: 1px solid var(--error-border); color: var(--error-text); }

@@ -66,7 +66,7 @@ public class UserManagementServlet extends HttpServlet {
                         Role userRole = roleDao.findById(user.getRoleId());
                         request.setAttribute("roleName", userRole != null ? userRole.getName() : "UNKNOWN");
 
-                        request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
+                        request.getRequestDispatcher("/WEB-INF/views/admin/users-form.jsp").forward(request, response);
                         return;
                     }
                 } catch (NumberFormatException e) {
@@ -79,7 +79,7 @@ public class UserManagementServlet extends HttpServlet {
             // Default: List all users
             List<User> users = userDao.findAll();
             request.setAttribute("users", users);
-            request.getRequestDispatcher("/WEB-INF/admin/users.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/admin/users.jsp").forward(request, response);
         }
     }
 
