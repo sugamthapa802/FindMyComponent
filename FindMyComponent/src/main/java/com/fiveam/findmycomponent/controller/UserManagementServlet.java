@@ -1,5 +1,6 @@
 package com.fiveam.findmycomponent.controller;
 
+
 import com.fiveam.findmycomponent.dao.RoleDao;
 import com.fiveam.findmycomponent.dao.RoleDaoImpl;
 import com.fiveam.findmycomponent.dao.UserDao;
@@ -19,7 +20,13 @@ import java.util.List;
 /**
  * UserManagementServlet - Handles user management for ADMIN
  * URL: /admin/users
- * Only ADMIN can access this servlet (AuthFilter will handle)
+ *
+ * Admin can ONLY:
+ * - View all users
+ * - Edit: first_name, last_name, phone, is_active
+ * - CANNOT create new users
+ * - CANNOT delete users (use is_active instead)
+ * - CANNOT change username, email, role_id
  */
 @WebServlet("/admin/users")
 public class UserManagementServlet extends HttpServlet {
@@ -40,7 +47,7 @@ public class UserManagementServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if ("edit".equals(action)) {
-            // Show edit form for user
+            // Show edit form for existing user
             String idParam = request.getParameter("id");
             if (idParam != null && !idParam.isEmpty()) {
                 try {
@@ -55,9 +62,9 @@ public class UserManagementServlet extends HttpServlet {
                         boolean isEditingSelf = (loggedInUser != null && user.getId() == loggedInUser.getId());
                         request.setAttribute("isEditingSelf", isEditingSelf);
 
-                        // Get all roles for dropdown
-                        List<Role> roles = roleDao.findAll();
-                        request.setAttribute("roles", roles);
+                        // Get role name for display (read-only)
+                        Role userRole = roleDao.findById(user.getRoleId());
+                        request.setAttribute("roleName", userRole != null ? userRole.getName() : "UNKNOWN");
 
                         request.getRequestDispatcher("/WEB-INF/admin/user-form.jsp").forward(request, response);
                         return;
@@ -83,18 +90,21 @@ public class UserManagementServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         User loggedInUser = (session != null) ? (User) session.getAttribute("user") : null;
 
+        if (loggedInUser == null || loggedInUser.getRoleId() != Role.ROLE_ADMIN) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+            return;
+        }
+
         String action = request.getParameter("action");
 
         if ("update".equals(action)) {
-            // Get all parameters
+            // Update existing user - ONLY first_name, last_name, phone, is_active
             String idParam = request.getParameter("id");
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
             String phone = request.getParameter("phone");
-            String roleIdParam = request.getParameter("roleId");
             String isActiveParam = request.getParameter("isActive");
 
-            // Validation
             if (idParam == null || idParam.isEmpty()) {
                 response.sendRedirect(request.getContextPath() + "/admin/users");
                 return;
@@ -105,7 +115,7 @@ public class UserManagementServlet extends HttpServlet {
                 User user = userDao.findById(id);
 
                 if (user != null) {
-                    // Always update basic info
+                    // Update basic info
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
                     user.setPhone(phone);
@@ -114,20 +124,14 @@ public class UserManagementServlet extends HttpServlet {
                     boolean isEditingSelf = (loggedInUser != null && user.getId() == loggedInUser.getId());
 
                     if (isEditingSelf) {
-                        // Self edit: prevent role change and deactivation
-                        user.setRoleId(Role.ROLE_ADMIN);  // Force ADMIN role
-                        user.setActive(true);              // Force active status
+                        // Self edit: cannot deactivate self
+                        user.setActive(true);
                     } else {
-                        // Editing others: allow role and status change
-                        if (roleIdParam != null && !roleIdParam.isEmpty()) {
-                            int roleId = Integer.parseInt(roleIdParam);
-                            user.setRoleId(roleId);
-                        }
-
+                        // Editing others: allow status change only
                         user.setActive("true".equals(isActiveParam));
                     }
 
-                    // Perform update
+                    // IMPORTANT: role_id, username, email are NOT updated
                     userDao.update(user);
                 }
 
