@@ -45,7 +45,7 @@ public class CategoryServlet extends HttpServlet {
 
         if ("add".equals(action)) {
             // Show add category form
-            request.getRequestDispatcher("/WEB-INF/admin/category-form.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/admin/category-form.jsp").forward(request, response);
 
         } else if ("edit".equals(action)) {
             // Show edit category form with existing data
@@ -56,7 +56,7 @@ public class CategoryServlet extends HttpServlet {
                     Category category = categoryDAO.findById(id);
                     if (category != null) {
                         request.setAttribute("category", category);
-                        request.getRequestDispatcher("/WEB-INF/admin/category-form.jsp").forward(request, response);
+                        request.getRequestDispatcher("/WEB-INF/views/admin/category-form.jsp").forward(request, response);
                         return;
                     }
                 } catch (NumberFormatException e) {
@@ -70,7 +70,7 @@ public class CategoryServlet extends HttpServlet {
             // Default: List all categories
             List<Category> categories = categoryDAO.findAll();
             request.setAttribute("categories", categories);
-            request.getRequestDispatcher("/WEB-INF/admin/categories.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/admin/categories.jsp").forward(request, response);
         }
     }
 
@@ -90,9 +90,9 @@ public class CategoryServlet extends HttpServlet {
             if (name == null || name.trim().isEmpty()) {
                 request.setAttribute("error", "Category name is required");
                 if (idParam != null && !idParam.isEmpty()) {
-                    request.getRequestDispatcher("/WEB-INF/admin/category-form.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/admin/category-form.jsp").forward(request, response);
                 } else {
-                    request.getRequestDispatcher("/WEB-INF/admin/category-form.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/admin/category-form.jsp").forward(request, response);
                 }
                 return;
             }
@@ -111,7 +111,7 @@ public class CategoryServlet extends HttpServlet {
                         if (nameCheck != null && nameCheck.getId() != id) {
                             request.setAttribute("error", "Category name already exists");
                             request.setAttribute("category", existingCategory);
-                            request.getRequestDispatcher("/WEB-INF/admin/category-form.jsp").forward(request, response);
+                            request.getRequestDispatcher("/WEB-INF/views/admin/category-form.jsp").forward(request, response);
                             return;
                         }
 
@@ -127,7 +127,7 @@ public class CategoryServlet extends HttpServlet {
                 // Check if name already exists
                 if (categoryDAO.existsByName(name)) {
                     request.setAttribute("error", "Category name already exists");
-                    request.getRequestDispatcher("/WEB-INF/admin/category-form.jsp").forward(request, response);
+                    request.getRequestDispatcher("/WEB-INF/views/admin/category-form.jsp").forward(request, response);
                     return;
                 }
 
