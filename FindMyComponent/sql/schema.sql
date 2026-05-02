@@ -58,3 +58,14 @@ CREATE TABLE if NOT EXISTS products (
                           FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE RESTRICT,
                           FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT
 );
+CREATE TABLE if NOT EXISTS cart_items (
+                            id INT PRIMARY KEY AUTO_INCREMENT,
+                            user_id INT NOT NULL,
+                            product_id INT NOT NULL,
+                            quantity INT NOT NULL CHECK (quantity > 0),
+                            added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                            FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE RESTRICT,
+                            UNIQUE KEY unique_user_product (user_id, product_id)
+);
