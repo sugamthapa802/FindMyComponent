@@ -105,6 +105,24 @@ public class UserDaoImpl implements UserDao {
         }
         return null;
     }
+    @Override
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users ORDER BY id";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                users.add(mapResultSetToUser(rs));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error finding all users: " + e.getMessage());
+        }
+        return users;
+    }
 
     @Override
     public boolean updateLastLogin(int userId) {
@@ -210,6 +228,28 @@ public class UserDaoImpl implements UserDao {
 //        }
 //        return null;
 //    }
+@Override
+public boolean update(User user) {
+    String sql = "UPDATE users SET first_name = ?, last_name = ?, phone = ?, role_id = ?, is_active = ? WHERE id = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+        pstmt.setString(1, user.getFirstName());
+        pstmt.setString(2, user.getLastName());
+        pstmt.setString(3, user.getPhone());
+        pstmt.setInt(4, user.getRoleId());
+        pstmt.setBoolean(5, user.isActive());
+        pstmt.setInt(6, user.getId());
+
+        int affectedRows = pstmt.executeUpdate();
+        return affectedRows > 0;
+
+    } catch (SQLException e) {
+        System.out.println("Error updating user: " + e.getMessage());
+    }
+    return false;
+}
 
     @Override
     public int getCount() {
