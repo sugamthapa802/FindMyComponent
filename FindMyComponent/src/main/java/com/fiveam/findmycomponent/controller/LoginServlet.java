@@ -157,7 +157,7 @@ public class LoginServlet extends HttpServlet {
 
         switch (user.getRoleId()) {
             case Role.ROLE_ADMIN:
-                response.sendRedirect(contextPath + "/admin/dashboard");
+                response.sendRedirect(contextPath + "/admin/users");
                 break;
             case Role.ROLE_SELLER:
                 response.sendRedirect(contextPath + "/seller/products");
