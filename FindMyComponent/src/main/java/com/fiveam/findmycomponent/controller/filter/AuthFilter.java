@@ -28,7 +28,7 @@ public class AuthFilter implements Filter {
 
     // Public URL prefixes (static resources)
     private static final List<String> PUBLIC_PREFIXES = Arrays.asList(
-            "/css/", "/js/", "/images/", "/uploads/"
+            "/static/","/css/", "/js/", "/images/", "/uploads/"
     );
 
     // Exact match public paths
