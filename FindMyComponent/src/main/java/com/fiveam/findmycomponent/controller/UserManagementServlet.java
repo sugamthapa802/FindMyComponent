@@ -37,6 +37,7 @@ public class UserManagementServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         userDao = new UserDaoImpl();
+
         roleDao = new RoleDaoImpl();
     }
 
