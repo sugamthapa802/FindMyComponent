@@ -122,3 +122,47 @@ CREATE TABLE IF NOT EXISTS cart_items (
     CONSTRAINT fk_cart_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE RESTRICT,
     UNIQUE KEY uq_user_product (user_id, product_id)
     ) COMMENT = 'Stores products added to a users shopping cart';
+
+-- =====================================================
+-- ORDERS TABLE
+-- Stores all orders placed by buyers
+-- =====================================================
+CREATE TABLE IF NOT EXISTS orders (
+                                      id              INT PRIMARY KEY AUTO_INCREMENT COMMENT 'Primary key, auto-incremented unique identifier',
+                                      order_number    VARCHAR(20) UNIQUE NOT NULL COMMENT 'Auto-incremented order number',
+    user_id         INT NOT NULL COMMENT 'Foreign key referencing users.id (buyer who placed order)',
+    total_amount    DECIMAL(10, 2) NOT NULL COMMENT 'Total order amount after seller responses',
+    order_status    ENUM('pending', 'accepted', 'dispatched', 'delivered', 'cancelled') DEFAULT 'pending' COMMENT 'Current order status',
+    payment_status  ENUM('pending', 'paid', 'failed') DEFAULT 'pending' COMMENT 'Payment status (COD only)',
+    payment_method  VARCHAR(50) DEFAULT 'COD' COMMENT 'Payment method (default: COD)',
+    shipping_address TEXT COMMENT 'Delivery address for the order',
+    notes           TEXT COMMENT 'Additional notes from buyer',
+    accepted_at     TIMESTAMP NULL COMMENT 'When all items were accepted',
+    dispatched_at   TIMESTAMP NULL COMMENT 'When admin dispatched the order',
+    delivered_at    TIMESTAMP NULL COMMENT 'When buyer confirmed delivery',
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'When order was created',
+    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last update timestamp',
+
+    CONSTRAINT fk_orders_user FOREIGN KEY (user_id) REFERENCES users(id)
+    ) COMMENT = 'Stores all orders placed by buyers';
+
+-- =====================================================
+-- ORDER ITEMS TABLE
+-- Stores individual products within an order (per seller)
+-- =====================================================
+CREATE TABLE IF NOT EXISTS order_items (
+                                           id                  INT PRIMARY KEY AUTO_INCREMENT COMMENT 'Primary key, auto-incremented unique identifier',
+                                           order_id            INT NOT NULL COMMENT 'Foreign key referencing orders.id',
+                                           product_id          INT NOT NULL COMMENT 'Foreign key referencing products.id',
+                                           seller_id           INT NOT NULL COMMENT 'Foreign key referencing users.id (seller of this product)',
+                                           product_name        VARCHAR(200) NOT NULL COMMENT 'Snapshot of product name at order time',
+    product_price       DECIMAL(10, 2) NOT NULL COMMENT 'Snapshot of product price at order time',
+    quantity            INT NOT NULL COMMENT 'Quantity ordered',
+    subtotal            DECIMAL(10, 2) NOT NULL COMMENT 'product_price * quantity',
+    seller_status       ENUM('pending', 'accepted', 'rejected') DEFAULT 'pending' COMMENT 'Seller decision on this item',
+    seller_responded_at TIMESTAMP NULL COMMENT 'When seller made decision',
+
+    CONSTRAINT fk_orderitems_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    CONSTRAINT fk_orderitems_product FOREIGN KEY (product_id) REFERENCES products(id),
+    CONSTRAINT fk_orderitems_seller FOREIGN KEY (seller_id) REFERENCES users(id)
+    ) COMMENT = 'Stores individual products within an order (per seller)';
