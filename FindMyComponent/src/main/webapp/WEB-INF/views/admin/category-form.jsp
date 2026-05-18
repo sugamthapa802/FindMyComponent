@@ -19,35 +19,34 @@
         </div>
 
         <div class="admin-card">
-
-        <c:if test="${not empty error}">
-            <div class="alert alert-error">
-                <span class="alert-icon">⚠</span> ${error}
-            </div>
-        </c:if>
-
-        <form action="${pageContext.request.contextPath}/admin/categories?action=save" method="post">
-            <c:if test="${category != null}">
-                <input type="hidden" name="id" value="${category.id}">
+            <c:if test="${not empty error}">
+                <div class="alert alert-error">
+                    <span class="alert-icon">⚠</span> <c:out value="${error}"/>
+                </div>
             </c:if>
 
-            <div class="form-group">
-                <label for="name">Category Name</label>
-                <input type="text" id="name" name="name" placeholder="e.g. Sensors & Modules"
-                       value="<c:out value='${category.name}' />" required />
-            </div>
+            <form action="${pageContext.request.contextPath}/admin/categories?action=save" method="post">
+                <c:if test="${category != null}">
+                    <input type="hidden" name="id" value="${category.id}">
+                </c:if>
 
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" rows="5"
-                          placeholder="Describe the items in this category..."><c:out value='${category.description}' /></textarea>
-            </div>
+                <div class="form-group">
+                    <label for="name">Category Name</label>
+                    <input type="text" id="name" name="name" placeholder="e.g. Sensors & Modules"
+                           value="<c:out value='${category.name}' />" required />
+                </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn-submit">${category == null ? 'Create Category' : 'Update Category'}</button>
-                <a href="${pageContext.request.contextPath}/admin/categories" class="btn-cancel">Cancel</a>
-            </div>
-        </form>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="5"
+                              placeholder="Describe the items in this category..."><c:out value='${category.description}' /></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">${category == null ? 'Create Category' : 'Update Category'}</button>
+                    <a href="${pageContext.request.contextPath}/admin/categories" class="btn-cancel">Cancel</a>
+                </div>
+            </form>
         </div>
     </main>
 </div>

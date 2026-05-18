@@ -7,9 +7,11 @@
     <jsp:param name="cssFile" value="cart" />
 </jsp:include>
 
-<body class="shop-page-scoped">
+<body>
 
-<jsp:include page="/WEB-INF/templates/nav.jsp" />
+<jsp:include page="/WEB-INF/templates/nav.jsp">
+    <jsp:param name="activeTab" value="cart" />
+</jsp:include>
 
 <main class="cart-main-container">
 
@@ -38,7 +40,7 @@
                     <c:forEach var="item" items="${cartItems}">
                         <div class="cart-item-row">
                             <div class="cart-item-image">
-                                <img src="${pageContext.request.contextPath}${item.productImageUrl}" alt="${item.productName}" />
+                                <img src="${pageContext.request.contextPath}${item.productImageUrl}" alt="<c:out value='${item.productName}'/>" />
                             </div>
 
                             <div class="item-details">
@@ -48,7 +50,7 @@
                                     </a>
                                 </h3>
                                 <div class="item-unit-price">
-                                    Unit Price: $<fmt:formatNumber value="${item.productPrice}" minFractionDigits="2" />
+                                    Unit Price: $<fmt:formatNumber value="${item.productPrice}" minFractionDigits="2" maxFractionDigits="2" />
                                 </div>
 
                                 <div class="cart-item-actions">
@@ -67,10 +69,10 @@
                                 </div>
                             </div>
 
-                            <div class="item-subtotal-display" style="text-align: right;">
-                                <div style="font-size: 11px; color: var(--muted); text-transform: uppercase;">Subtotal</div>
-                                <div style="font-size: 20px; font-weight: 800; color: var(--text);">
-                                    $<fmt:formatNumber value="${item.totalPrice}" minFractionDigits="2" />
+                            <div class="item-subtotal-display">
+                                <div class="subtotal-lbl">Subtotal</div>
+                                <div class="subtotal-val">
+                                    $<fmt:formatNumber value="${item.totalPrice}" minFractionDigits="2" maxFractionDigits="2" />
                                 </div>
                             </div>
                         </div>
@@ -87,14 +89,14 @@
 
                     <div class="summary-row summary-total">
                         <span>Total Payable</span>
-                        <span class="total-amount">$<fmt:formatNumber value="${cartTotal}" minFractionDigits="2" /></span>
+                        <span class="total-amount">$<fmt:formatNumber value="${cartTotal}" minFractionDigits="2" maxFractionDigits="2" /></span>
                     </div>
 
                     <button class="btn-checkout-now">Proceed to Checkout</button>
 
-                    <form action="${pageContext.request.contextPath}/buyer/cart" method="POST" style="margin-top: 20px; text-align: center;">
+                    <form action="${pageContext.request.contextPath}/buyer/cart" method="POST" class="clear-cart-form">
                         <input type="hidden" name="action" value="clear" />
-                        <button type="submit" style="background:none; border:none; color:var(--muted-2); text-decoration:underline; cursor:pointer; font-size:12px;">Clear All Items</button>
+                        <button type="submit" class="btn-clear-all">Clear All Items</button>
                     </form>
                 </aside>
 
@@ -102,6 +104,5 @@
         </c:otherwise>
     </c:choose>
 </main>
-
 </body>
 </html>
