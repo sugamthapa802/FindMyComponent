@@ -5,7 +5,6 @@
     <c:redirect url="/admin/users" />
 </c:if>
 
-<!-- Dynamically load your template head and pass your parameters -->
 <jsp:include page="/WEB-INF/templates/head.jsp">
     <jsp:param name="title" value="${isAddMode ? 'Add Product' : 'Edit Product'}" />
     <jsp:param name="cssFile" value="product-form" />
@@ -15,14 +14,15 @@
 <jsp:include page="/WEB-INF/templates/seller-nav.jsp">
     <jsp:param name="activeTab" value="form" />
 </jsp:include>
+
 <div class="form-container">
     <h2>${isAddMode ? 'Add New Product' : 'Edit Existing Product'}</h2>
 
     <c:if test="${not empty error}">
-        <div class="alert alert-danger">${error}</div>
+        <div class="alert alert-danger"><c:out value="${error}"/></div>
     </c:if>
     <c:if test="${not empty param.success}">
-        <div class="alert alert-success">${param.success}</div>
+        <div class="alert alert-success"><c:out value="${param.success}"/></div>
     </c:if>
 
     <form action="${pageContext.request.contextPath}/seller/products?action=save"
@@ -34,7 +34,7 @@
         <div class="form-group">
             <label for="name">Product Name <span class="required">*</span></label>
             <input type="text" id="name" name="name"
-                   value="${not empty preservedName ? preservedName : product.name}" required />
+                   value="<c:out value='${not empty preservedName ? preservedName : product.name}'/>" required />
         </div>
 
         <div class="form-group">
@@ -44,7 +44,7 @@
                 <c:forEach var="cat" items="${categories}">
                     <c:set var="currentCatId" value="${not empty preservedCategoryId ? preservedCategoryId : product.categoryId}" />
                     <option value="${cat.id}" ${currentCatId == cat.id ? 'selected' : ''}>
-                            ${cat.name}
+                        <c:out value="${cat.name}"/>
                     </option>
                 </c:forEach>
             </select>
@@ -53,22 +53,22 @@
         <div class="form-group">
             <label for="brand">Brand</label>
             <input type="text" id="brand" name="brand"
-                   value="${not empty preservedBrand ? preservedBrand : product.brand}" />
+                   value="<c:out value='${not empty preservedBrand ? preservedBrand : product.brand}'/>" />
         </div>
 
         <div class="form-group">
             <label for="description">Description</label>
-            <textarea id="description" name="description" rows="4">${not empty preservedDescription ? preservedDescription : product.description}</textarea>
+            <textarea id="description" name="description" rows="4"><c:out value='${not empty preservedDescription ? preservedDescription : product.description}'/></textarea>
         </div>
 
         <div class="form-row">
-            <div class="form-group col">
+            <div class="form-group">
                 <label for="price">Price ($) <span class="required">*</span></label>
                 <input type="number" id="price" name="price" step="0.01" min="0.01"
                        value="${not empty preservedPrice ? preservedPrice : product.price}" required />
             </div>
 
-            <div class="form-group col">
+            <div class="form-group">
                 <label for="stockQuantity">Stock Quantity <span class="required">*</span></label>
                 <input type="number" id="stockQuantity" name="stockQuantity" min="0" step="1"
                        value="${not empty preservedStockQuantity ? preservedStockQuantity : product.stockQuantity}" required />
@@ -81,7 +81,7 @@
 
             <c:if test="${!isAddMode && not empty product.mainImageUrl}">
                 <div class="current-image-preview">
-                    <p>Current Image:</p>
+                    <p>Current Image View:</p>
                     <img src="${pageContext.request.contextPath}${product.mainImageUrl}" alt="Product Preview Image" />
                 </div>
             </c:if>
@@ -99,9 +99,7 @@
                 ${isAddMode ? 'Create Product' : 'Save Changes'}
             </button>
         </div>
-
     </form>
 </div>
-
 </body>
 </html>

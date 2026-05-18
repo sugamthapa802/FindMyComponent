@@ -8,9 +8,9 @@
 
 <body>
 
-<!-- Shared Application Navigation Bar Include -->
-<jsp:include page="/WEB-INF/templates/nav.jsp" />
-
+<jsp:include page="/WEB-INF/templates/nav.jsp">
+    <jsp:param name="activeTab" value="shop" />
+</jsp:include>
 <div class="shop-page-scoped shop-wrapper">
 
     <div class="dashboard-header">
@@ -33,7 +33,7 @@
                     <option value="">All Categories</option>
                     <c:forEach var="cat" items="${categories}">
                         <option value="${cat.id}" ${selectedCategoryId == cat.id ? 'selected' : ''}>
-                                ${cat.name}
+                            <c:out value="${cat.name}"/>
                         </option>
                     </c:forEach>
                 </select>
@@ -41,7 +41,7 @@
 
             <div class="form-control-group search-field">
                 <label for="search-input">Search</label>
-                <input type="text" id="search-input" name="search" value="${searchKeyword}" placeholder="Search components, brands..." />
+                <input type="text" id="search-input" name="search" value="<c:out value='${searchKeyword}'/>" placeholder="Search components, brands..." />
             </div>
 
             <div class="form-control-group">
@@ -77,7 +77,7 @@
                         <div class="card-img-wrapper">
                             <c:choose>
                                 <c:when test="${not empty prod.mainImageUrl}">
-                                    <img src="${pageContext.request.contextPath}${prod.mainImageUrl}" alt="${prod.name}" loading="lazy" />
+                                    <img src="${pageContext.request.contextPath}${prod.mainImageUrl}" alt="<c:out value='${prod.name}'/>" loading="lazy" />
                                 </c:when>
                                 <c:otherwise>
                                     <div class="no-img-card-fallback">Component Image</div>
@@ -87,9 +87,9 @@
 
                         <div class="card-content">
                             <c:if test="${not empty prod.brand}">
-                                <span class="card-brand-pill">${prod.brand}</span>
+                                <span class="card-brand-pill"><c:out value="${prod.brand}"/></span>
                             </c:if>
-                            <h3 class="card-title-text">${prod.name}</h3>
+                            <h3 class="card-title-text"><c:out value="${prod.name}"/></h3>
                             <div class="card-pricing-block">$${prod.price}</div>
 
                             <div class="card-stock-row">
@@ -153,6 +153,5 @@
     </c:if>
 
 </div>
-
 </body>
 </html>

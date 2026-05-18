@@ -3,7 +3,7 @@
 
 <jsp:include page="/WEB-INF/templates/head.jsp">
     <jsp:param name="title" value="FMC Admin — User Management" />
-    <jsp:param name="cssFile" value="categories" />
+    <jsp:param name="cssFile" value="user" />
 </jsp:include>
 
 <body>
@@ -48,15 +48,22 @@
                             </td>
                             <td><c:out value="${u.phone != null ? u.phone : 'N/A'}"/></td>
                             <td>
-                            <span class="status-badge ${u.active ? 'active' : 'inactive'}">
-                                    ${u.active ? 'Active' : 'Suspended'}
-                            </span>
+                                <span class="status-badge ${u.active ? 'active' : 'inactive'}">
+                                        ${u.active ? 'Active' : 'Suspended'}
+                                </span>
                             </td>
                             <td>
                                 <a href="${pageContext.request.contextPath}/admin/users?action=edit&id=${u.id}" class="btn-edit">Manage</a>
                             </td>
                         </tr>
                     </c:forEach>
+                    <c:if test="${empty users}">
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                No registered system users discovered.
+                            </td>
+                        </tr>
+                    </c:if>
                     </tbody>
                 </table>
             </div>

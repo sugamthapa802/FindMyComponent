@@ -5,9 +5,8 @@
     <c:redirect url="/admin/users" />
 </c:if>
 
-<!-- Dynamically load your template head and pass your parameters -->
 <jsp:include page="/WEB-INF/templates/head.jsp">
-    <jsp:param name="title" value="FMC Admin — Categories" />
+    <jsp:param name="title" value="Merchant Panel — Catalog" />
     <jsp:param name="cssFile" value="products" />
 </jsp:include>
 
@@ -18,7 +17,6 @@
 
 <div class="dashboard-container">
 
-    <!-- Header Controls -->
     <div class="dashboard-header">
         <div>
             <h2>Product Catalog Management</h2>
@@ -31,14 +29,12 @@
         </a>
     </div>
 
-    <!-- System Response Success Alerts -->
     <c:if test="${not empty param.success}">
         <div class="alert alert-success">
             <span class="alert-icon">✓</span> ${param.success}
         </div>
     </c:if>
 
-    <!-- Product Presentation Data Table -->
     <div class="table-card">
         <table class="product-table">
             <thead>
@@ -63,7 +59,7 @@
                 </c:when>
                 <c:otherwise>
                     <c:forEach var="prod" items="${products}">
-                        <tr>
+                        <tr class="${!prod.active ? 'row-inactive' : ''}">
                             <td class="img-col">
                                 <c:choose>
                                     <c:when test="${not empty prod.mainImageUrl}">
@@ -76,9 +72,9 @@
                             </td>
 
                             <td>
-                                <div class="product-name">${prod.name}</div>
+                                <div class="product-name"><c:out value="${prod.name}"/></div>
                                 <c:if test="${not empty prod.brand}">
-                                    <span class="product-brand">${prod.brand}</span>
+                                    <span class="product-brand"><c:out value="${prod.brand}"/></span>
                                 </c:if>
                                 <c:if test="${isAdmin}">
                                     <div class="seller-owner-id">Seller Owner ID: ${prod.sellerId}</div>
@@ -133,6 +129,5 @@
         </table>
     </div>
 </div>
-
 </body>
 </html>

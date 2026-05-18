@@ -24,7 +24,6 @@
                 <a href="${pageContext.request.contextPath}/admin/categories?action=add" class="btn-primary">+ Add New</a>
             </div>
 
-            <%-- Error Alert Section --%>
             <c:if test="${not empty error}">
                 <div class="alert alert-error">
                     <span class="alert-icon">⚠</span>
@@ -46,17 +45,15 @@
                     <tbody>
                     <c:forEach var="cat" items="${categories}">
                         <tr class="${!cat.active ? 'row-inactive' : ''}">
-                            <td class="id-cell">
-                                #${cat.id}
-                            </td>
+                            <td class="id-cell">#${cat.id}</td>
                             <td><strong><c:out value="${cat.name}"/></strong></td>
                             <td class="description-cell">
                                 <c:out value="${cat.description}"/>
                             </td>
                             <td>
-                                        <span class="status-badge ${cat.active ? 'active' : 'inactive'}">
-                                                ${cat.active ? 'Active' : 'Archived'}
-                                        </span>
+                                <span class="status-badge ${cat.active ? 'active' : 'inactive'}">
+                                        ${cat.active ? 'Active' : 'Archived'}
+                                </span>
                             </td>
                             <td class="action-buttons text-right">
                                 <a href="${pageContext.request.contextPath}/admin/categories?action=edit&id=${cat.id}" class="btn-edit">Edit</a>

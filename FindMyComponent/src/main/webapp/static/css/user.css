@@ -1,20 +1,306 @@
-/* Orbitron for Headings & Labels | Exo 2 for Body, Data, and Buttons */
+/* ==========================================================================
+   user.css - Standalone White Theme User Management Layout
+   ========================================================================== */
 
-/* --- TABLE EXTENSIONS FOR USERS --- */
+:root {
+    --bg: #f8fafc;                  /* Light framework background gray */
+    --surface: #ffffff;             /* Pure white panels and containers */
+    --surface-soft: #f1f5f9;        /* Light slate hover/header states */
+    --field: #ffffff;               /* Input base color */
+    --border: #cbd5e1;              /* Soft gray container boundaries */
+    --accent: #2563eb;              /* Clean Blue brand focal accent */
+    --text: #0f172a;                /* Charcoal body text */
+    --muted: #475569;               /* Slate gray for subtitles & headers */
+    --muted-2: #64748b;             /* Mid-tone gray for metadata labels */
+
+    /* Alert Tones */
+    --error-bg: #fee2e2;
+    --error-border: #fca5a5;
+    --error-text: #991b1b;
+    --success-bg: #dcfce7;
+    --success-border: #86efac;
+    --success-text: #166534;
+    --info-bg: #e0f2fe;
+    --info-border: #bae6fd;
+    --info-text: #0369a1;
+
+    --radius: 8px;
+    --radius-sm: 6px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', Arial, Helvetica, sans-serif;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* --- Framework Core Blocks --- */
+.admin-layout {
+    display: block;
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- Vertical Sidebar Layout --- */
+.admin-sidebar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    flex-direction: column;
+    width: 250px;
+    height: 100vh;
+    padding: 22px 16px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    z-index: 50;
+}
+
+.sidebar-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 24px;
+    padding: 0 8px;
+}
+
+.brand-glitch {
+    color: var(--accent);
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.brand-sub {
+    color: var(--muted-2);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.sidebar-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav a,
+.btn-logout {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: var(--radius-sm);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.sidebar-nav a:hover {
+    background: var(--surface-soft);
+    color: var(--text);
+}
+
+.sidebar-nav li.active a {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 16px;
+}
+
+.btn-logout {
+    justify-content: center;
+    width: 100%;
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+    cursor: pointer;
+}
+
+.btn-logout:hover {
+    background: #fca5a5;
+}
+
+/* --- Viewport Main Context Windows --- */
+.admin-main-content {
+    width: min(calc(100% - 250px), 1240px);
+    min-width: 0;
+    max-width: 100%;
+    margin: 0 auto 0 250px;
+    padding: 34px 28px 48px;
+}
+
+.narrow-content {
+    max-width: 760px;
+}
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.admin-header img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+.admin-header h1 {
+    margin: 0;
+    color: var(--text);
+    font-size: 28px;
+    line-height: 1.15;
+}
+
+/* --- Container Blocks --- */
+.admin-container,
+.admin-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.admin-container {
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.admin-card {
+    padding: 28px;
+}
+
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px;
+    background: var(--surface-soft);
+    border-bottom: 1px solid var(--border);
+}
+
+.table-header h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: 18px;
+}
+
+/* --- Responsive Layout Data Tables --- */
+.data-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.users-table {
+    min-width: 680px;
+}
+
+.users-table .primary-cell,
+.users-table .secondary-cell {
+    max-width: 260px;
+    overflow-wrap: anywhere;
+}
+
+.data-table th {
+    padding: 13px 16px;
+    background: var(--surface-soft);
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.data-table td {
+    padding: 15px 16px;
+    color: var(--text);
+    border-bottom: 1px solid var(--surface-soft);
+    vertical-align: middle;
+}
 
 .data-table td strong {
-    font-family: 'Exo 2', sans-serif;
     color: var(--accent);
     font-weight: 600;
 }
 
-/* Status Badges - Using Exo 2 for clarity at small sizes */
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+    background: rgba(37, 99, 235, 0.03);
+}
+
+.row-inactive {
+    opacity: 0.55;
+    background: #fcfcfc;
+}
+
+.id-cell {
+    color: var(--accent);
+    font-weight: 900;
+}
+
+.primary-cell {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.secondary-cell {
+    margin-top: 4px;
+    color: var(--muted-2);
+    font-size: 12px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* --- Status Micro-Badging Elements --- */
 .status-badge {
-    font-family: 'Exo 2', sans-serif;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
     padding: 4px 10px;
     border-radius: 4px;
-    font-size: 0.7rem;
+    font-size: 11px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -33,68 +319,215 @@
     border-color: var(--error-border);
 }
 
-/* --- USER FORM SPECIAL STYLES --- */
+/* --- Interface Action Modals & Buttons --- */
+.btn-primary,
+.btn-submit,
+.btn-edit,
+.btn-delete,
+.btn-activate,
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+}
 
-/* Read-only container for sensitive info (Username/Role) */
+.btn-primary,
+.btn-submit {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.btn-primary:hover,
+.btn-submit:hover {
+    background: #1d4ed8;
+}
+
+.btn-edit {
+    background: #eff6ff;
+    color: #1e40af;
+    border-color: #bfdbfe;
+}
+
+.btn-edit:hover {
+    background: #dbeafe;
+}
+
+.btn-cancel {
+    background: var(--surface-soft);
+    color: var(--muted);
+}
+
+.btn-cancel:hover {
+    background: #e2e8f0;
+}
+
+/* --- Comprehensive Form Structures --- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--field);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* --- User Form Specialty Blocks --- */
+.profile-summary,
 .readonly-box {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 30px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.02);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 15px;
+    background: var(--surface-soft);
     border: 1px dashed var(--border);
     border-radius: var(--radius-sm);
 }
 
+.profile-summary label,
 .readonly-label {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.65rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    display: block;
     margin-bottom: 4px;
+    color: var(--muted-2);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
 }
 
+.profile-summary div div,
 .readonly-value {
-    font-family: 'Exo 2', sans-serif;
     color: var(--text);
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 800;
+    font-size: 14px;
 }
 
-/* Styled Select for Account Status */
 select.status-select {
-    font-family: 'Exo 2', sans-serif;
-    background: var(--surface);
+    background: var(--field);
     color: var(--text);
     border: 1px solid var(--border);
     width: 100%;
     padding: 12px;
     border-radius: var(--radius-sm);
     cursor: pointer;
-    appearance: none; /* Removes default arrow */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%237a8099' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23475569' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: calc(100% - 15px) center;
 }
 
-select.status-select:focus {
-    border-color: var(--border-focus);
-    outline: none;
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
 }
 
-/* Alert/Notice for "Editing Self" */
+.alert,
 .alert-notice {
-    font-family: 'Exo 2', sans-serif;
-    background: rgba(79, 142, 247, 0.05);
-    border: 1px solid var(--border);
-    padding: 12px;
-    border-radius: var(--radius-sm);
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 10px;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.alert-info,
+.alert-notice {
+    background: var(--info-bg);
+    color: var(--info-text);
+    border: 1px solid var(--info-border);
+}
+
+/* --- Media Layout Adapters --- */
+@media (max-width: 920px) {
+    .admin-sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        padding: 14px;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+    }
+    .sidebar-brand {
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding: 0;
+    }
+    .sidebar-nav ul {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+    .sidebar-footer {
+        margin-top: 12px;
+        padding-top: 0;
+    }
+    .admin-main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 24px 0 36px;
+    }
+    .admin-header,
+    .admin-container,
+    .admin-card {
+        width: calc(100% - 28px);
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .btn-primary,
+    .btn-submit,
+    .btn-cancel {
+        width: 100%;
+    }
+    .profile-summary,
+    .readonly-box {
+        grid-template-columns: 1fr;
+    }
 }
