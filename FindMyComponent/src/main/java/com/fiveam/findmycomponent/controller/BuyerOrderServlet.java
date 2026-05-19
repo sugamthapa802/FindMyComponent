@@ -91,7 +91,14 @@ public class BuyerOrderServlet extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/buyer/orders");
 
-        } else {
+        }
+        else if ("confirmation".equals(action)) {
+            // Session attributes already set in handlePlaceOrder()
+            request.getRequestDispatcher("/WEB-INF/views/shop/order-confirmation.jsp")
+                    .forward(request, response);
+
+        }
+        else {
             List<Order> orders = orderDao.findByUserId(buyer.getId());
             request.setAttribute("orders", orders);
             request.getRequestDispatcher("/WEB-INF/views/shop/orders.jsp").forward(request, response);
