@@ -14,7 +14,6 @@
 
     <main class="admin-main-content">
         <div class="admin-header">
-            <img src="${pageContext.request.contextPath}/static/images/logo.png" alt="FMC Logo" />
             <h1>User Management</h1>
         </div>
 

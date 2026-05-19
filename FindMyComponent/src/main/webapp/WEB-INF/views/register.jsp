@@ -12,7 +12,6 @@
 <div class="register-page">
 
     <div class="register-header">
-        <img src="${pageContext.request.contextPath}/static/images/logo.png" alt="FMC Logo" />
         <h1>FindMyComponent</h1>
     </div>
 
