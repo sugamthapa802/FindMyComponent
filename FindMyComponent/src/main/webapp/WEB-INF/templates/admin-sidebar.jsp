@@ -10,7 +10,7 @@
     <nav class="sidebar-nav">
         <ul>
             <li class="${param.active == 'users' ? 'active' : ''}">
-                <a href="${pageContext.request.contextPath}/admin/users">Users Loop</a>
+                <a href="${pageContext.request.contextPath}/admin/users">Manage users</a>
             </li>
             <li class="${param.active == 'categories' ? 'active' : ''}">
                 <a href="${pageContext.request.contextPath}/admin/categories">Categories</a>
