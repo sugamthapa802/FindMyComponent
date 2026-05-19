@@ -14,7 +14,6 @@
 
     <main class="admin-main-content narrow-content">
         <div class="admin-header">
-            <img src="${pageContext.request.contextPath}/static/images/logo.png" alt="FMC Logo" />
             <h1>${category == null ? 'New Category' : 'Edit Category'}</h1>
         </div>
 
